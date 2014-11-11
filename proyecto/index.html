@@ -5,9 +5,12 @@
 <script src="js/loaders/DDSLoader.js"></script>
 <script src="js/loaders/MTLLoader.js"></script>
 <script src="js/loaders/OBJMTLLoader.js"></script>
+<script src="js/jquery-2.1.1.js"></script>
 <script src="js/main.js"></script>
+<script src="js/jquery.sidr.min.js"></script>
 
 <link rel="stylesheet" type="text/css" href="css/estilos.css">
+<link rel="stylesheet" type="text/css" href="css/jquery.sidr.dark.css">
 
 <title>Proyecto - MI</title>
 </head>
@@ -16,5 +19,20 @@
 		<div id="leftMargin"></div>
 		<div id="rightMargin"></div>
 	</div>
+
+	<div id="sidr">
+		<ul>
+			<li>
+				<div id="infoText"></div>
+			</li>
+			<a id="infoHide" href="#sidr">
+				<button class="btn inner">Hide</button>
+			</a>
+		</ul>
+	</div>
+	<a id="infoShow" href="#sidr">
+		<button class="btn">Info</button>
+	</a>
+
 </body>
 </html>

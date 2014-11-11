@@ -1,5 +1,18 @@
 threshold = 128;
 DEBUG = false;
+var SELECTED;
+var mouse = new THREE.Vector2();
+var objects = [];
+
+selectedItem = {
+	descripcion:"ufyfuguguoihiluhkhlkjhgi",
+	precio:1.5445,
+	index: 0,
+	toString: function(){
+		var todo = "Descripcion: " + selectedItem.descripcion + "<br/>Precio: $" + selectedItem.precio;
+		return todo;
+	}
+};
 
 getUserMedia = function(t, onsuccess, onerror) {
 	if (navigator.getUserMedia) {
@@ -16,6 +29,7 @@ getUserMedia = function(t, onsuccess, onerror) {
 };
 
 URL = window.URL || window.webkitURL;
+
 createObjectURL = URL.createObjectURL || webkitURL.createObjectURL;
 if (!createObjectURL) {
 	throw new Error("URL.createObjectURL not found.");
@@ -54,6 +68,7 @@ function loadModels(){
 			}
 		}
 		speakerModel1 = object;
+		//objects.push(speakerModel1);
 	} );
 
 	loader.load( 'obj/TV/tv_1.obj', 'obj/TV/tv_1.mtl', function( object ) {
@@ -74,6 +89,7 @@ function loadModels(){
 			}
 		}
 		tvModel = object;
+		//objects.push(tvModel);
 	} );
 }
 
@@ -107,7 +123,6 @@ function init(){
 	videoCanvas = document.createElement('canvas');
 	videoCanvas.width = video.width;
 	videoCanvas.height = video.width*3/4;
-//	videoCanvas.style.display = 'none';
 
 	ctx = canvas.getContext('2d');
 	ctx.font = "24px URW Gothic L, Arial, Sans-serif";
@@ -126,6 +141,7 @@ function init(){
 	renderer = new THREE.WebGLRenderer();
 	renderer.setSize(960, 720);
 
+	renderer.domElement.id = "glCanvas";
 	glCanvas = renderer.domElement;
 	s = glCanvas.style;
 	document.body.appendChild(glCanvas);
@@ -164,6 +180,8 @@ function init(){
 	times = [];
 	markers = {};
 	lastTime = 0;
+
+	projector = new THREE.Projector();
 }
 
 function update(){
@@ -202,7 +220,6 @@ function update(){
 	}
 	for (i in markers) {
 		r = markers[i];
-		//console.log(r.age);
 		if (r.age > 1) {
 			delete markers[i];
 			scene.remove(r.model);
@@ -220,6 +237,7 @@ function update(){
 				case '0':
 					mesh = new THREE.Object3D();
 					mesh = speakerModel1;
+					objects.push(mesh);
 				break;
 				case '1':
 					mesh = new THREE.Object3D();
@@ -252,40 +270,30 @@ function update(){
 			m.model.matrixAutoUpdate = false;
 			m.model.add(mesh);
 			scene.add(m.model);
-			
-			
 		}//if(!m.model)
 
-
-
 		tmpMat.elements[0] = m.transform.m00;
-		tmpMat.elements[1] = -m.transform.m10;//----
+		tmpMat.elements[1] = -m.transform.m10;
 		tmpMat.elements[2] = m.transform.m20;
 		tmpMat.elements[3] = 0;
 
-		tmpMat.elements[4] = -m.transform.m01;//rotacionz no-
-		tmpMat.elements[5] = m.transform.m11;//---
+		tmpMat.elements[4] = -m.transform.m01;
+		tmpMat.elements[5] = m.transform.m11;
 		tmpMat.elements[6] = -m.transform.m21;
 		tmpMat.elements[7] = 0;
 		
-		tmpMat.elements[8] = -m.transform.m02;//afdafafsafa
+		tmpMat.elements[8] = -m.transform.m02;
 		tmpMat.elements[9] = m.transform.m12;
-		tmpMat.elements[10] = -m.transform.m22;//safasfasf
+		tmpMat.elements[10] = -m.transform.m22;
 		tmpMat.elements[11] = 0;
 		
-		tmpMat.elements[12] = m.transform.m03;//traslate x
-		tmpMat.elements[13] = -m.transform.m13;//---
+		tmpMat.elements[12] = m.transform.m03;
+		tmpMat.elements[13] = -m.transform.m13;
 		tmpMat.elements[14] = m.transform.m23;
 		tmpMat.elements[15] = 1;
  
 		m.model.matrix.copy(tmpMat);
 		m.model.matrixWorldNeedsUpdate = true;
-		/*
-		console.log(tmpMat);
-		console.log("-------------------");
-		console.log(m.model.matrix);
-		console.log("\n\n");
-		*/
 	}
 }
 
@@ -298,12 +306,6 @@ function render(){
 	renderer.clear();
 	renderer.render(videoScene, videoCam);
 	renderer.render(scene, camera);
-}
-
-window.onload = function() {
-	init();
-
-	render();
 }
 
 THREE.Matrix4.prototype.setFromArray = function(m) {
@@ -333,3 +335,74 @@ function copyMatrix(mat, cm) {
 	cm[14] = mat.m23;
 	cm[15] = 1;
 }
+
+function updateInfo(){
+	switch(selectedItem.index){
+		case 0://tele
+			selectedItem.descripcion = "Television marca gato :v - 3D - 4K";
+			selectedItem.precio = 14999.99;
+		break;
+		case 1://bocina
+			selectedItem.descripcion = "Subwufer marca pato :v - 10cm - 120v";
+			selectedItem.precio = 1000;
+		break;
+		default:
+		break;
+	}
+	$('#infoText').html(selectedItem.toString());
+}
+
+function onDocumentMouseMove( event ) {
+	event.preventDefault();
+	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+	mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+}
+
+function onDocumentMouseDown( event ) {
+	event.preventDefault();
+
+	var vector = new THREE.Vector3( mouse.x, mouse.y, 0.5 );
+	projector.unprojectVector( vector, camera );
+
+	var raycaster = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
+
+	var intersects = raycaster.intersectObjects( objects );
+
+	if ( intersects.length > 0 ) {
+
+		controls.enabled = false;
+
+		SELECTED = intersects[ 0 ].object;
+
+		var intersects = raycaster.intersectObject( plane );
+		offset.copy( intersects[ 0 ].point ).sub( plane.position );
+
+		container.style.cursor = 'move';
+
+	}
+	console.log(SELECTED);
+
+}
+
+$(document).ready(function(){
+	init();
+	render();
+	//alert("hola jquery");
+	$('#infoShow').sidr({
+		side: 'right',
+		displace: false
+	});
+
+	$('#infoHide').sidr({
+		side: 'right',
+		displace: false
+	});
+
+	$('#infoShow').click(function(){
+		updateInfo();
+	});
+	/*
+	document.onmousemove = onDocumentMouseMove;
+	document.onmousedown = onDocumentMouseDown;
+	*/
+});
