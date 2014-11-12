@@ -1,0 +1,35 @@
+body{
+	/*
+	background: rgba(48,64,73,1);
+	background: rgba(255,64,73,1);
+	*/
+	background-color: black;
+}
+
+.sidra{
+	text-align: center;
+	padding: 20px 10px 0px 10px;
+}
+
+div img{
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+
+	background: rgba(1.0,1.0,1.0,1.0);
+}
+
+.mainContainer{
+	text-align: center;
+}
+
+.subContainer{
+	border-style: solid;
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+	border-color: #rgba(24,32,36,0.5);/*182024;/**/
+	background: rgba(48,64,73,0.5);
+	display: inline-block;
+	margin: 20px 20px 20px 20px;/*top right bottom left*/
+}

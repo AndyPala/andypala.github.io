@@ -1,0 +1,31 @@
+# Blender MTL File: 'None'
+# Material Count: 3
+
+newmtl back
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.693360 0.580400 0.125520
+Ks 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd RenderStuff_CoolerMaster_case_back.tga
+map_Ka RenderStuff_CoolerMaster_case_back.tga
+
+newmtl paint
+Ns 11.764706
+Ka 0.000000 0.000000 0.000000
+Kd 0.043920 0.065920 0.084720
+Ks 0.144000 0.144000 0.144000
+Ni 1.500000
+d 1.000000
+illum 2
+
+newmtl wire_028089177
+Ns 29.411765
+Ka 0.000000 0.000000 0.000000
+Kd 0.087840 0.279200 0.555280
+Ks 0.350000 0.350000 0.350000
+Ni 1.000000
+d 1.000000
+illum 2

@@ -1,18 +1,12 @@
 threshold = 128;
 DEBUG = false;
-var SELECTED;
-var mouse = new THREE.Vector2();
-var objects = [];
 
 selectedItem = {
-	descripcion:"ufyfuguguoihiluhkhlkjhgi",
-	precio:1.5445,
-	index: 0,
-	toString: function(){
-		var todo = "Descripcion: " + selectedItem.descripcion + "<br/>Precio: $" + selectedItem.precio;
-		return todo;
-	}
+	descripcion:"",
+	precio:0.0,
+	index: 0
 };
+objetos = [];
 
 getUserMedia = function(t, onsuccess, onerror) {
 	if (navigator.getUserMedia) {
@@ -45,12 +39,18 @@ getUserMedia({'video': true},
 	}
 );
 
+speakerModel1 = new THREE.Object3D();
+speakerModel2 = new THREE.Object3D();
+dvdModel = new THREE.Object3D();
+tvModel = new THREE.Object3D();
+pcModel = new THREE.Object3D();
+torreModel = new THREE.Object3D();
+laptopModel = new THREE.Object3D();
+
 function loadModels(){
 	var loader = new THREE.OBJMTLLoader();
-	speakerModel1 = new THREE.Object3D();
-	tvModel = new THREE.Object3D();
 
-	loader.load( 'obj/Speaker/speaker.obj', 'obj/Speaker/speaker.mtl', function( object ) {
+	loader.load( 'obj/Speaker_1/speaker.obj', 'obj/Speaker_1/speaker.mtl', function( object ) {
 		for (a in object.children){
 			part = object.children[a];
 
@@ -68,7 +68,46 @@ function loadModels(){
 			}
 		}
 		speakerModel1 = object;
-		//objects.push(speakerModel1);
+	} );
+
+	loader.load( 'obj/Speaker_2/speaker.obj', 'obj/Speaker_2/speaker.mtl', function( object ) {
+		for (a in object.children){
+			part = object.children[a];
+
+			if (part.material){
+				part.material.side = THREE.DoubleSide;
+			}
+
+			if (part.children.length>0){
+				for(b in part.children){
+					child = part.children[b];
+					if (child.material){
+						child.material.side = THREE.DoubleSide;
+					}
+				}
+			}
+		}
+		speakerModel2 = object;
+	} );
+
+	loader.load( 'obj/Dvd/DVD.obj', 'obj/Dvd/DVD.mtl', function( object ) {
+		for (a in object.children){
+			part = object.children[a];
+
+			if (part.material){
+				part.material.side = THREE.DoubleSide;
+			}
+
+			if (part.children.length>0){
+				for(b in part.children){
+					child = part.children[b];
+					if (child.material){
+						child.material.side = THREE.DoubleSide;
+					}
+				}
+			}
+		}
+		dvdModel = object;
 	} );
 
 	loader.load( 'obj/TV/tv_1.obj', 'obj/TV/tv_1.mtl', function( object ) {
@@ -89,7 +128,66 @@ function loadModels(){
 			}
 		}
 		tvModel = object;
-		//objects.push(tvModel);
+	} );
+
+	loader.load( 'obj/Pc/Monitor_Tec_Mouse.obj', 'obj/Pc/Monitor_Tec_Mouse.mtl', function( object ) {
+		for (a in object.children){
+			part = object.children[a];
+
+			if (part.material){
+				part.material.side = THREE.DoubleSide;
+			}
+
+			if (part.children.length>0){
+				for(b in part.children){
+					child = part.children[b];
+					if (child.material){
+						child.material.side = THREE.DoubleSide;
+					}
+				}
+			}
+		}
+		pcModel = object;
+	} );
+
+	loader.load( 'obj/Torre/torre.obj', 'obj/Torre/torre.mtl', function( object ) {
+		for (a in object.children){
+			part = object.children[a];
+
+			if (part.material){
+				part.material.side = THREE.DoubleSide;
+			}
+
+			if (part.children.length>0){
+				for(b in part.children){
+					child = part.children[b];
+					if (child.material){
+						child.material.side = THREE.DoubleSide;
+					}
+				}
+			}
+		}
+		torreModel = object;
+	} );
+
+	loader.load( 'obj/Laptop/laptop.obj', 'obj/Laptop/laptop.mtl', function( object ) {
+		for (a in object.children){
+			part = object.children[a];
+
+			if (part.material){
+				part.material.side = THREE.DoubleSide;
+			}
+
+			if (part.children.length>0){
+				for(b in part.children){
+					child = part.children[b];
+					if (child.material){
+						child.material.side = THREE.DoubleSide;
+					}
+				}
+			}
+		}
+		laptopModel = object;
 	} );
 }
 
@@ -180,8 +278,6 @@ function init(){
 	times = [];
 	markers = {};
 	lastTime = 0;
-
-	projector = new THREE.Projector();
 }
 
 function update(){
@@ -202,7 +298,6 @@ function update(){
 	detected = detector.detectMarkerLite(raster, threshold);
 	for (idx = 0; idx<detected; idx++) {
 		id = detector.getIdMarkerData(idx);
-		//currId;
 		if (id.packetLength > 4) {
 			currId = -1;
 		}else{
@@ -223,6 +318,14 @@ function update(){
 		if (r.age > 1) {
 			delete markers[i];
 			scene.remove(r.model);
+			//borrar la info del objeto
+			console.log(i);
+			for(j in objetos){
+				if(objetos[j].index == i){
+					objetos.splice(j, 1);
+					updateInfo();
+				}
+			}
 		}
 		r.age++;
 	}
@@ -232,23 +335,76 @@ function update(){
 
 			if(typeof mesh !== 'undefined')
 				delete mesh;
+
+			selectedItem = {};
+
+			/*
+				speakerModel1	0
+				speakerModel2	3
+				dvdModel		2
+				tvModel			1
+				pcModel			4
+				torreModel		5
+				laptopModel		6
+			*/
+
 			meshMaterial = new THREE.MeshLambertMaterial({color: 0x00ff00});
 			switch(i){
 				case '0':
 					mesh = new THREE.Object3D();
 					mesh = speakerModel1;
-					objects.push(mesh);
+					selectedItem.descripcion = "Subwoofer marca gato - 25cm - 120v";
+					selectedItem.precio = 4999.50;
+					selectedItem.index = i;
+					objetos.push(selectedItem);
 				break;
 				case '1':
 					mesh = new THREE.Object3D();
 					mesh = tvModel;
+					selectedItem.descripcion = "Television marca pato - 3D - 4K";
+					selectedItem.precio = 24999.50;
+					selectedItem.index = i;
+					objetos.push(selectedItem);
 				break;
 				case '2':
-					meshGeometry = new THREE.TorusKnotGeometry();
-					meshMaterial.color.setHSL( 0.02, 1.0, 0.5 );
-					mesh = new THREE.Mesh( meshGeometry, meshMaterial);
-					mesh.position.z = -50;
-					mesh.doubleSided = true;
+					mesh = new THREE.Object3D();
+					mesh = dvdModel;
+					selectedItem.descripcion = "Reproductor de Dvd marca perro";
+					selectedItem.precio = 499.50;
+					selectedItem.index = i;
+					objetos.push(selectedItem);
+				break;
+				case '3':
+					mesh = new THREE.Object3D();
+					mesh = speakerModel2;
+					selectedItem.descripcion = "Bocina para microondas - 5cm - 20v";
+					selectedItem.precio = 100;
+					selectedItem.index = i;
+					objetos.push(selectedItem);
+				break;
+				case '4':
+					mesh = new THREE.Object3D();
+					mesh = pcModel;
+					selectedItem.descripcion = "Juego mi primer computadora";
+					selectedItem.precio = 850;
+					selectedItem.index = i;
+					objetos.push(selectedItem);
+				break;
+				case '5':
+					mesh = new THREE.Object3D();
+					mesh = torreModel;
+					selectedItem.descripcion = "Ladrillo LEGO para construccion";
+					selectedItem.precio = 2000;
+					selectedItem.index = i;
+					objetos.push(selectedItem);
+				break;
+				case '6':
+					mesh = new THREE.Object3D();
+					mesh = laptopModel;
+					selectedItem.descripcion = "Laptop marca laptop";
+					selectedItem.precio = 14999.99;
+					selectedItem.index = i;
+					objetos.push(selectedItem);
 				break;
 				case '62':
 					meshGeometry = new THREE.IcosahedronGeometry(100);
@@ -265,11 +421,14 @@ function update(){
 					mesh.doubleSided = true;
 				break;
 			}
+
+
 			
 			m.model = new THREE.Object3D();
 			m.model.matrixAutoUpdate = false;
 			m.model.add(mesh);
 			scene.add(m.model);
+			updateInfo();
 		}//if(!m.model)
 
 		tmpMat.elements[0] = m.transform.m00;
@@ -337,51 +496,21 @@ function copyMatrix(mat, cm) {
 }
 
 function updateInfo(){
-	switch(selectedItem.index){
-		case 0://tele
-			selectedItem.descripcion = "Television marca gato :v - 3D - 4K";
-			selectedItem.precio = 14999.99;
-		break;
-		case 1://bocina
-			selectedItem.descripcion = "Subwufer marca pato :v - 10cm - 120v";
-			selectedItem.precio = 1000;
-		break;
-		default:
-		break;
+	var newHtml = "";
+	console.log(objetos);
+	for (i in objetos) {
+		newHtml += "<li>";
+		newHtml += objetos[i].descripcion;
+		newHtml += "<br>";
+		newHtml += "$" + objetos[i].precio;
+		newHtml += "</li>";
+		/*
+		newHtml += "<br>";
+		newHtml += objetos[i].index;
+		newHtml += "<br>----<br>";
+		*/
 	}
-	$('#infoText').html(selectedItem.toString());
-}
-
-function onDocumentMouseMove( event ) {
-	event.preventDefault();
-	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-	mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-}
-
-function onDocumentMouseDown( event ) {
-	event.preventDefault();
-
-	var vector = new THREE.Vector3( mouse.x, mouse.y, 0.5 );
-	projector.unprojectVector( vector, camera );
-
-	var raycaster = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
-
-	var intersects = raycaster.intersectObjects( objects );
-
-	if ( intersects.length > 0 ) {
-
-		controls.enabled = false;
-
-		SELECTED = intersects[ 0 ].object;
-
-		var intersects = raycaster.intersectObject( plane );
-		offset.copy( intersects[ 0 ].point ).sub( plane.position );
-
-		container.style.cursor = 'move';
-
-	}
-	console.log(SELECTED);
-
+	$('#infoText').html(newHtml);
 }
 
 $(document).ready(function(){
@@ -401,8 +530,4 @@ $(document).ready(function(){
 	$('#infoShow').click(function(){
 		updateInfo();
 	});
-	/*
-	document.onmousemove = onDocumentMouseMove;
-	document.onmousedown = onDocumentMouseDown;
-	*/
 });
