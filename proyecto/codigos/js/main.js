@@ -1,10 +1,63 @@
 function init(){
+	viewport = {width:window.innerWidth*0.97, height:window.innerHeight*0.97};
 
+	scene = new THREE.Scene();
+	//scene.fog = new THREE.FogExp2( 0x000000, 0.01 );
+
+	camera = new THREE.PerspectiveCamera( 75,  viewport.width/viewport.height , 0.1, 1000 );
+	camera.lookAt(new THREE.Vector3( 0, 0, -5 ));
+
+	renderer = new THREE.WebGLRenderer();
+	renderer.setSize( viewport.width, viewport.height );
+	//0x060710
+	renderer.setClearColor( 0x304049, 1 );
+	document.body.appendChild( renderer.domElement );
+
+	//------------Particulas
+	paritclesGeometry = new THREE.Geometry();
+	particlesMap = THREE.ImageUtils.loadTexture("textures/disc.png");
+	particleAttributes = 
+	{
+		size: 10,
+		map: particlesMap,
+		transparent: true,
+		sizeAttenuation: false
+	};
+	particlesMaterial = new THREE.PointCloudMaterial(particleAttributes);
+	particlesMaterial.color.setHSL( 1.0, 1.0, 1.0 );
+
+	for (var i = 0; i < 1000; i++) {
+		var vertice = new THREE.Vector3();
+		vertice.x = Math.random() * 500 - 250;
+		vertice.y = Math.random() * 500 - 250;
+		vertice.z = Math.random() * 500 - 250;
+
+		paritclesGeometry.vertices.push(vertice);
+	}
+
+	particles = new THREE.PointCloud( paritclesGeometry, particlesMaterial );
+	particles.sortParticles = true;
+	scene.add(particles);
+
+	h = 0.0;
+	rotationYC = 0.0005;
 }
 
-function render () {
+function render() {
+	requestAnimationFrame(render);
 
+	update();
+
+	renderer.render(scene, camera);
 }
+
+function update(){
+	particles.rotation.y += rotationYC;
+}
+
+infoHtml = "";
+imgHtml = "";
+codeHtml = "";
 
 function linkSidr(){
 
@@ -44,17 +97,7 @@ function linkSidr(){
 	});
 }
 
-infoHtml = "";
-imgHtml = "";
-codeHtml = "";
-
-$(document).ready(function(){
-	init();
-	render();
-	//alert("hola jquery");
-
-	linkSidr();
-
+function bindEvents(){
 	$('#subwooferInfo').click(function() {
 		infoHtml = "Subwoofer marca gato - 25cm - 120v";
 		imgHtml = "<img src=\"imgs/subw.png\" height=\"100\" width=\"100\">";
@@ -94,6 +137,7 @@ $(document).ready(function(){
 	$('#monitorInfo').click(function() {
 		infoHtml = "Juego mi primer computadora";
 		imgHtml = "<img src=\"imgs/pc.png\" height=\"100\" width=\"100\">";
+
 		codeHtml = "<img src=\"imgs/codes/4.jpg\" height=\"100\" width=\"100\">";
 		$('#sidrImg').html(imgHtml);
 		$('#sidrInfo').html(infoHtml);
@@ -117,4 +161,13 @@ $(document).ready(function(){
 		$('#sidrInfo').html(infoHtml);
 		$('#sidrCode').html(codeHtml);
 	});
+}
+
+
+$(document).ready(function(){
+	linkSidr();
+	bindEvents();
+
+	init();
+	render();
 });
