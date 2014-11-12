@@ -1,9 +1,9 @@
 body{
 	/*
 	background: rgba(255,64,73,1);
-	background-color: black;
+	background: rgba(48,64,73,1);/*304049
 	*/
-	background: rgba(48,64,73,1);/*304049*/
+	background-color: black;
 }
 
 canvas{
