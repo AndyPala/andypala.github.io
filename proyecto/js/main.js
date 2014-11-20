@@ -319,7 +319,6 @@ function update(){
 			delete markers[i];
 			scene.remove(r.model);
 			//borrar la info del objeto
-			console.log(i);
 			for(j in objetos){
 				if(objetos[j].index == i){
 					objetos.splice(j, 1);
@@ -497,7 +496,7 @@ function copyMatrix(mat, cm) {
 
 function updateInfo(){
 	var newHtml = "";
-	console.log(objetos);
+
 	for (i in objetos) {
 		newHtml += "<li>";
 		newHtml += objetos[i].descripcion;

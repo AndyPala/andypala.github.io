@@ -42,10 +42,20 @@ canvas{
 }
 
 #buttonContainer{
+	/*
 	float: right;
-	margin-right: 2.5%;
+	*/
+	color: yellow;
+	position: absolute;
+	width: 299px;
+	margin-left: 75.5%;
 	margin-top: 5%;
 	text-align: right;
+}
+
+.infoText{
+	margin-top: 5%;
+	font-family: sans-serif;
 }
 
 .btn {
