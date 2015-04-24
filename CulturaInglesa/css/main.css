@@ -53,3 +53,28 @@
 #Container h3{
 	display: inline-block;
 }
+
+#Container .launch.button .icon {
+  margin-left: 0px;
+}
+
+#Index .item {
+  position: relative;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+}
+
+#Container #Index .inverted.header {
+	font-size: 1em;
+	font-weight: normal;
+	color: rgba(255, 255, 255, 0.8);
+	margin-bottom: 0.5em;
+}
+
+#Container #Index .item {
+	position: relative;
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	border-radius: 0px;
+}
