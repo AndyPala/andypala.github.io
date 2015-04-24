@@ -1,0 +1,8 @@
+.indexContainer{
+	width: 350px;
+	height: 300px;
+}
+
+.launch{
+	transition: 0.3s width ease, 0.5s transform ease;
+}
