@@ -44,7 +44,7 @@
 #Container .fixed.launch.button {
   position: fixed;
   top: 63px;
-  left: -1px;
+  right: -1px;
   width: 55px;
   height: auto;
   white-space: nowrap;
@@ -112,4 +112,11 @@
 
 #Container .ribon{
 	z-index: -1;
+}
+
+#Container .darkblue{
+	background-color: darkblue;
+	color: #ffffff;
+	text-shadow: none;
+	background-image: none;
 }
