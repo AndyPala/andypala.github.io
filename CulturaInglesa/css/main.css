@@ -24,6 +24,9 @@
 	height: 100%;
 	z-index: -1;
 	background: linear-gradient(rgba(255,255,255,0), rgba(247,247,247,1) 20%);
+	background: -webkit-linear-gradient(rgba(255,255,255,0), rgba(247,247,247,1) 20%);
+	background: -o-linear-gradient(rgba(255,255,255,0), rgba(247,247,247,1) 20%);
+	background: -moz-linear-gradient(rgba(255,255,255,0), rgba(247,247,247,1) 20%);
 }
 
 #mainContainer{
