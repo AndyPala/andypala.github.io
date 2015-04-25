@@ -27,13 +27,13 @@
 }
 
 #mainContainer{
-	top: 0;
-	left: 0;
 	padding-left: 10%;
-	width: 80%;
+	width: 85%;
 	text-align: justify;
 	display: inline-block;
 	/*
+	top: 0;
+	left: 0;
 	position: absolute;
 	*/
 }
