@@ -44,7 +44,7 @@
 #Container .fixed.launch.button {
   position: fixed;
   top: 63px;
-  right: -1px;
+  left: -1px;
   width: 55px;
   height: auto;
   white-space: nowrap;
