@@ -30,7 +30,7 @@
 }
 
 #mainContainer{
-	padding-left: 10%;
+	padding-left: 7%;
 	width: 85%;
 	text-align: justify;
 	display: inline-block;
@@ -108,4 +108,8 @@
 
 #Container .Capital{
 	margin:0 0 0 0;
+}
+
+#Container .ribon{
+	z-index: -1;
 }
