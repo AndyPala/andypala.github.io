@@ -1,8 +1,15 @@
 $("document").ready(function(){
-	$('.sidebar').first().sidebar('attach events', '.button');
+	$('.sidebar').first().sidebar('attach events', '.toggle.button');
 	$('.toggle.button').removeClass('disabled');
 	$('.menu .item').tab();
-	var options = { $AutoPlay: true };
-	var jssor_slider1 = new $JssorSlider$('slider2_container', options);
-	var jssor_slider1 = new $JssorSlider$('slider2_container_2', options);
+	$('#js-error').remove();
+	$('#ignore-error').click(function(){
+		$('#ie-error').slideUp();
+	});
+
+	var UAChrome = /chrom(e|ium)/.test(navigator.userAgent.toLowerCase());
+	var UAFirefox = /firefox/.test(navigator.userAgent.toLowerCase());
+	if (UAChrome  ||  UAFirefox){
+		$('#ie-error').remove();
+	}
 });
