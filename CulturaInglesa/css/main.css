@@ -26,27 +26,27 @@
 }
 
 #Bg{
-	position: absolute;
-	opacity: .125;
+	position: fixed;
+	opacity: .25;
 	width: 100%;
 	height: 100%;
 	z-index: -3;
 }
 
 #BgColor{
-	position: absolute;
+	position: fixed;
 	width: 100%;
 	height: 100%;
 	z-index: -2;
-	background: linear-gradient(rgba(255,255,255,0), rgba(247,247,247,1) 20%);
-	background: -webkit-linear-gradient(rgba(255,255,255,0), rgba(247,247,247,1) 20%);
-	background: -o-linear-gradient(rgba(255,255,255,0), rgba(247,247,247,1) 20%);
-	background: -moz-linear-gradient(rgba(255,255,255,0), rgba(247,247,247,1) 20%);
+	background: linear-gradient(rgba(255,255,255,0), rgba(247,247,247,1) 50%);
+	background: -webkit-linear-gradient(rgba(255,255,255,0), rgba(247,247,247,1) 50%);
+	background: -o-linear-gradient(rgba(255,255,255,0), rgba(247,247,247,1) 50%);
+	background: -moz-linear-gradient(rgba(255,255,255,0), rgba(247,247,247,1) 50%);
 }
 
 .Bg{
 	position: absolute;
-	opacity: .25;
+	opacity: .4;
 	width: 100%;
 	height: 100%;
 	z-index: -3;
