@@ -171,3 +171,9 @@
 .sliderino{
 	margin-left: 15%;
 }
+
+.sup {
+	position: relative;
+	bottom: 1ex; 
+	font-size: 80%;
+}
