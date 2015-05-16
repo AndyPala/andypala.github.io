@@ -531,7 +531,13 @@ $(document).ready(function(){
 	});
 
 	$(document).keydown(function(event){
-		if (event.keyCode == 187)
-			console.log(event);
+		if (event.keyCode == 187){
+			threshold++;
+			if (threshold > 255) threshold = 255;
+		}
+		if (event.keyCode == 189){
+			threshold--;
+			if (threshold < 0) threshold = 0;
+		}
 	});
 });
