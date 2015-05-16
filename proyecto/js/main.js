@@ -531,6 +531,7 @@ $(document).ready(function(){
 	});
 
 	$(document).keydown(function(event){
-		console.log(event);
+		if (event.keyCode == 187)
+			console.log(event);
 	});
 });
