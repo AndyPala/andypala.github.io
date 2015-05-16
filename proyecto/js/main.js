@@ -529,4 +529,8 @@ $(document).ready(function(){
 	$('#infoShow').click(function(){
 		updateInfo();
 	});
+
+	$(document).keydown(function(event){
+		console.log(event);
+	});
 });
