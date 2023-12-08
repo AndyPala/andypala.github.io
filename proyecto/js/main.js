@@ -23,10 +23,13 @@ getUserMedia = function(t, onsuccess, onerror) {
 };
 
 function createObjectURL ( file ) {
+	let binaryData = [];
+	binaryData.push(file);
+
     if ( window.webkitURL ) {
-        return window.webkitURL.createObjectURL( file );
+        return window.webkitURL.createObjectURL( binaryData );
     } else if ( window.URL && window.URL.createObjectURL ) {
-        return window.URL.createObjectURL( file );
+        return window.URL.createObjectURL( binaryData );
     } else {
         return null;
     }
