@@ -22,11 +22,14 @@ getUserMedia = function(t, onsuccess, onerror) {
 	}
 };
 
-URL = window.URL || window.webkitURL;
-
-createObjectURL = URL.createObjectURL || webkitURL.createObjectURL;
-if (!createObjectURL) {
-	throw new Error("URL.createObjectURL not found.");
+function createObjectURL ( file ) {
+    if ( window.webkitURL ) {
+        return window.webkitURL.createObjectURL( file );
+    } else if ( window.URL && window.URL.createObjectURL ) {
+        return window.URL.createObjectURL( file );
+    } else {
+        return null;
+    }
 }
 
 getUserMedia({'video': true},
